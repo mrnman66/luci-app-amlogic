@@ -5,7 +5,8 @@ on:
 
 env:
   OPENWRT_VERSION: 24.10.2
-  TARGET_PLATFORM: armsr/armv8
+  PLATFORM_TARGET: armsr/armv8 # Определяем полную цель, включая "/armv8"
+  ARCH_NAME: armsr-armv8 # Только имя архитектуры без "/"
 
 jobs:
   build_and_publish:
@@ -17,8 +18,8 @@ jobs:
 
       - name: ⚙️ Download and extract OpenWRT SDK
         run: |
-          sudo apt-get update && sudo apt-get install -y curl unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config zstd # устанавливаем zstd для распаковки архива
-          curl -fsSL https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET_PLATFORM}/openwrt-sdk-${OPENWRT_VERSION}-${TARGET_PLATFORM}_gcc-13.3.0_musl.Linux-x86_64.tar.zst -O
+          sudo apt-get update && sudo apt-get install -y curl unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config zstd # добавляем zstd для распаковки архива
+          curl -fsSL https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${PLATFORM_TARGET}/openwrt-sdk-${OPENWRT_VERSION}-${ARCH_NAME}_gcc-13.3.0_musl.Linux-x86_64.tar.zst -O
           tar --use-compress-program=zstd -xf openwrt-sdk-*.tar.zst
           cd openwrt-* && scripts/feeds update -a && scripts/feeds install -a
 
