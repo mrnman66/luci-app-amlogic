@@ -22,12 +22,12 @@ jobs:
           curl -fsSL https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${PLATFORM_TARGET}/openwrt-sdk-${OPENWRT_VERSION}-${ARCH_NAME}_gcc-13.3.0_musl.Linux-x86_64.tar.zst -O
           tar --use-compress-program=zstd -xf openwrt-sdk-*.tar.zst
           
-          # Определим каталог SDK явно и выведем его содержимое для диагностики
-          SDK_DIR="$(ls -F | grep '/$' | head -n 1)" || { echo "Failed to find SDK directory"; exit 1; }
-          ls -la "$SDK_DIR" || { echo "Failed to list contents of SDK directory"; exit 1; }
+          # Поиск главного каталога SDK
+          SDK_DIR="$(ls -F | grep '/$' | grep -v '^luci-app-amlogic/' | head -n 1)" || { echo "Failed to find SDK directory"; exit 1; }
           cd "$SDK_DIR" || { echo "Failed to change directory"; exit 1; }
 
-          # Проверьте наличие папки "scripts" и файла "feeds"
+          # Диагностика содержимого SDK-директории
+          ls -la || { echo "Failed to list contents of SDK directory"; exit 1; }
           test -d scripts && test -x scripts/feeds || { echo "Directory 'scripts' or script 'feeds' is missing"; exit 1; }
 
           scripts/feeds update -a && scripts/feeds install -a
