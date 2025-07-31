@@ -24,6 +24,7 @@ jobs:
           
           # Находим главный каталог SDK
           SDK_DIR="$(ls -F | grep '/$' | grep -v '^luci-app-amlogic/' | head -n 1)" || { echo "Failed to find SDK directory"; exit 1; }
+          APP_DIR="${GITHUB_WORKSPACE}/luci-app-amlogic" # Определим переменную APP_DIR для ясности
           cd "$SDK_DIR" || { echo "Failed to change directory"; exit 1; }
 
           # Проверяем наличие необходимой структуры
@@ -36,8 +37,8 @@ jobs:
         run: |
           cd "${SDK_DIR}" || { echo "Failed to change directory"; exit 1; }
           mkdir -p feeds/custom || { echo "Failed to create custom feed directory"; exit 1; }
-          # Выполняем копирование конкретных файлов и папок
-          cp -R ../../luci-app-amlogic/{Makefile,root,src,po,LICENSE} feeds/custom/
+          # Используем переменную APP_DIR для ясности
+          cp -R "${APP_DIR}/{Makefile,root,src,po,LICENSE}" feeds/custom/
           scripts/feeds install -p custom -f luci-app-amlogic
 
       - name: ✨ Start compilation process
