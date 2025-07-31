@@ -36,8 +36,8 @@ jobs:
         run: |
           cd "${SDK_DIR}" || { echo "Failed to change directory"; exit 1; }
           mkdir -p feeds/custom || { echo "Failed to create custom feed directory"; exit 1; }
-          # Поднимаемся на уровень выше и копируем из родительского каталога
-          cp -R ../../luci-app-amlogic/{Makefile,root,src,po,LICENSE} feeds/custom/
+          # Возвращаемся назад и копируем нужное
+          cp -R ../../luci-app-amlogic/ feeds/custom/
           scripts/feeds install -p custom -f luci-app-amlogic
 
       - name: ✨ Start compilation process
