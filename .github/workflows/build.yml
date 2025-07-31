@@ -22,11 +22,11 @@ jobs:
           curl -fsSL https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${PLATFORM_TARGET}/openwrt-sdk-${OPENWRT_VERSION}-${ARCH_NAME}_gcc-13.3.0_musl.Linux-x86_64.tar.zst -O
           tar --use-compress-program=zstd -xf openwrt-sdk-*.tar.zst
           
-          # Поиск главного каталога SDK
+          # Находим главный каталог SDK
           SDK_DIR="$(ls -F | grep '/$' | grep -v '^luci-app-amlogic/' | head -n 1)" || { echo "Failed to find SDK directory"; exit 1; }
           cd "$SDK_DIR" || { echo "Failed to change directory"; exit 1; }
 
-          # Диагностика содержимого SDK-директории
+          # Проверяем наличие необходимой структуры
           ls -la || { echo "Failed to list contents of SDK directory"; exit 1; }
           test -d scripts && test -x scripts/feeds || { echo "Directory 'scripts' or script 'feeds' is missing"; exit 1; }
 
@@ -35,7 +35,7 @@ jobs:
       - name: 🛠️ Copy sources into SDK structure
         run: |
           cd "${SDK_DIR}" || { echo "Failed to change directory"; exit 1; }
-          mkdir feeds/custom
+          mkdir -p feeds/custom || { echo "Failed to create custom feed directory"; exit 1; }
           cp -R ../luci-app-amlogic/* feeds/custom/
           scripts/feeds install -p custom -f luci-app-amlogic
 
