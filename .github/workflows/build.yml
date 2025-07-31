@@ -21,18 +21,23 @@ jobs:
           sudo apt-get update && sudo apt-get install -y curl unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config zstd # добавляем zstd для распаковки архива
           curl -fsSL https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${PLATFORM_TARGET}/openwrt-sdk-${OPENWRT_VERSION}-${ARCH_NAME}_gcc-13.3.0_musl.Linux-x86_64.tar.zst -O
           tar --use-compress-program=zstd -xf openwrt-sdk-*.tar.zst
-          cd openwrt-* && scripts/feeds update -a && scripts/feeds install -a
+          
+          # Явно получаем название единственного каталога после распаковки
+          SDK_DIR="$(ls -F | grep '/$' | head -n 1)"
+          cd "$SDK_DIR" || { echo "Failed to change directory"; exit 1; }
+
+          scripts/feeds update -a && scripts/feeds install -a
 
       - name: 🛠️ Copy sources into SDK structure
         run: |
-          cd openwrt-*
+          cd "${SDK_DIR}" || { echo "Failed to change directory"; exit 1; }
           mkdir feeds/custom
           cp -R ../luci-app-amlogic/* feeds/custom/
           scripts/feeds install -p custom -f luci-app-amlogic
 
       - name: ✨ Start compilation process
         run: |
-          cd openwrt-*
+          cd "${SDK_DIR}" || { echo "Failed to change directory"; exit 1; }
           make defconfig
           make package/luci-app-amlogic/compile V=s
 
