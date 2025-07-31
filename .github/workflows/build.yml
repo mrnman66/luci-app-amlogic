@@ -51,7 +51,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          upload_url: ${{steps.create_release.outputs.upload_url}} # This pulls upload url from previous step.
+          upload_url: ${{steps.create_release.outputs.upload_url}} # Получаем URL выгрузки из шага выше
           asset_path: openwrt-*/bin/packages/*/*.ipk
           asset_name: luci-app-amlogic.ipk
           asset_content_type: application/octet-stream
