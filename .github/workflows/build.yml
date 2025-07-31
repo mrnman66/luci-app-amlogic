@@ -17,8 +17,8 @@ jobs:
 
       - name: ⚙️ Download and extract OpenWRT SDK
         run: |
-          sudo apt-get update && sudo apt-get install -y wget unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config zstd # Добавили zstd для извлечения *.tar.zst
-          wget https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET_PLATFORM}/openwrt-sdk-${OPENWRT_VERSION}-${TARGET_PLATFORM}_gcc-*-Linux-x86_64.tar.zst
+          sudo apt-get update && sudo apt-get install -y wget unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config zstd # Установка zstd для распаковки архива
+          wget https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET_PLATFORM}/openwrt-sdk-${OPENWRT_VERSION}-${TARGET_PLATFORM}_gcc-13.3.0_musl.Linux-x86_64.tar.zst
           tar --use-compress-program=zstd -xf openwrt-sdk-*.tar.zst
           cd openwrt-* && scripts/feeds update -a && scripts/feeds install -a
 
