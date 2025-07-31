@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Возможность ручного запуска
 
 env:
-  OPENWRT_VERSION: 24.10
+  OPENWRT_VERSION: 24.10.2
   TARGET_PLATFORM: armsr/armv8
 
 jobs:
@@ -17,9 +17,9 @@ jobs:
 
       - name: ⚙️ Download and extract OpenWRT SDK
         run: |
-          sudo apt-get update && sudo apt-get install -y wget unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config
-          wget https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET_PLATFORM}/openwrt-sdk-${OPENWRT_VERSION}-${TARGET_PLATFORM}.Linux-x86_64.tar.xz
-          tar xf openwrt-sdk-*.tar.xz
+          sudo apt-get update && sudo apt-get install -y wget unzip make gcc binutils patch diffstat git-core python3 libncurses-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config zstd # Добавили zstd для извлечения *.tar.zst
+          wget https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET_PLATFORM}/openwrt-sdk-${OPENWRT_VERSION}-${TARGET_PLATFORM}_gcc-*-Linux-x86_64.tar.zst
+          tar --use-compress-program=zstd -xf openwrt-sdk-*.tar.zst
           cd openwrt-* && scripts/feeds update -a && scripts/feeds install -a
 
       - name: 🛠️ Copy sources into SDK structure
