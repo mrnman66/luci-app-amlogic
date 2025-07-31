@@ -1,0 +1,57 @@
+name: Build Luci App Amlogic Package
+
+on:
+  workflow_dispatch: # Возможность ручного запуска
+
+env:
+  OPENWRT_VERSION: 24.10
+  TARGET_PLATFORM: armsr/armv8
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Check out source code
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Download and extract OpenWRT SDK
+        run: |
+          sudo apt-get update && sudo apt-get install -y wget unzip make gcc binutils patch diffstat git-core python3 libncurces-dev zlib1g-dev gawk chrpath xz-utils rsync bison flex bc pkg-config
+          wget https://downloads.openwrt.org/releases/${OPENWRT_VERSION}/targets/${TARGET_PLATFORM}/openwrt-sdk-${OPENWRT_VERSION}-${TARGET_PLATFORM}.Linux-x86_64.tar.xz
+          tar xf openwrt-sdk-*.tar.xz
+          cd openwrt-* && scripts/feeds update -a && scripts/feeds install -a
+
+      - name: 🛠️ Copy sources into SDK structure
+        run: |
+          cd openwrt-*
+          mkdir feeds/custom
+          cp -R ../luci-app-amlogic/* feeds/custom/
+          scripts/feeds install -p custom -f luci-app-amlogic
+
+      - name: ✨ Start compilation process
+        run: |
+          cd openwrt-*
+          make defconfig
+          make package/luci-app-amlogic/compile V=s
+
+      - name: 🖥️ Create a new release in your repository
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          tag_name: "v${OPENWRT_VERSION}-${{ github.run_id }}"
+          release_name: "OpenWRT Packages (${OPENWRT_VERSION})"
+          draft: false
+          prerelease: true
+
+      - name: 🗃️ Upload built IPK file(s) as release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}} # This pulls upload url from previous step.
+          asset_path: openwrt-*/bin/packages/*/*.ipk
+          asset_name: luci-app-amlogic.ipk
+          asset_content_type: application/octet-stream
