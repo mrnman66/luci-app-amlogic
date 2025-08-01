@@ -1,0 +1,110 @@
+# Russian translation for luci-app-amlogic
+# Copyright (c) 2025 OPHUB
+# This file is distributed under the same license as the luci-app-amlogic package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-app-amlogic\n"
+"Report-Msgid-Bugs-To:\n"
+"POT-Creation-Date:\n"
+"PO-Revision-Date:\n"
+"Last-Translator: Anonymous <anonymous@example.com>\n"
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "Amlogic Service"
+msgstr "Сервис Amlogic"
+
+msgid "Support for managing OpenWrt in Amlogic, Rockchip and Allwinner boxes."
+msgstr "Поддержка управления OpenWrt на устройствах Amlogic, Rockchip и Allwinner."
+
+msgid "Install OpenWrt"
+msgstr "Установить OpenWrt"
+
+msgid "Select Device Model"
+msgstr "Выбрать модель устройства"
+
+msgid "Manual Upload Update"
+msgstr "Ручное обновление через загрузку"
+
+msgid "Choose File"
+msgstr "Выбрать файл"
+
+msgid "Replace OpenWrt Kernel"
+msgstr "Заменить ядро OpenWrt"
+
+msgid "Update OpenWrt Firmware"
+msgstr "Обновить прошивку OpenWrt"
+
+msgid "Online Download Update"
+msgstr "Обновление через онлайн-загрузку"
+
+msgid "Update Box Plugin Only"
+msgstr "Обновить только плагин для бокса"
+
+msgid "Update System Kernel Only"
+msgstr "Обновить только ядро системы"
+
+msgid "Full System Update"
+msgstr "Полное обновление системы"
+
+msgid "Rescue the original system kernel"
+msgstr "Восстановить исходное ядро системы"
+
+msgid "Backup Firmware Configuration"
+msgstr "Резервное копирование конфигурации прошивки"
+
+msgid "Open List"
+msgstr "Открыть список"
+
+msgid "Download Backup"
+msgstr "Скачать резервную копию"
+
+msgid "Upload Backup"
+msgstr "Загрузить резервную копию"
+
+msgid "Create Snapshot"
+msgstr "Создать снимок"
+
+msgid "Restore Snapshot"
+msgstr "Восстановить снимок"
+
+msgid "Delete Snapshot"
+msgstr "Удалить снимок"
+
+msgid "Plugin Settings"
+msgstr "Настройки плагина"
+
+msgid "OpenWrt firmware download repository"
+msgstr "Репозиторий для загрузки прошивки OpenWrt"
+
+msgid "Tags keywords in Releases"
+msgstr "Ключевые слова тегов в релизах"
+
+msgid "Suffix of OpenWrt file"
+msgstr "Суффикс файла OpenWrt"
+
+msgid "OpenWrt Kernel Download Repository"
+msgstr "Репозиторий для загрузки ядра OpenWrt"
+
+msgid "Set version branch"
+msgstr "Установить ветку версии"
+
+msgid "Keep configuration update"
+msgstr "Сохранить конфигурацию при обновлении"
+
+msgid "Automatically write bootloader"
+msgstr "Автоматически записать загрузчик"
+
+msgid "Set file system type"
+msgstr "Установить тип файловой системы"
+
+msgid "CPU Settings"
+msgstr "Настройки процессора"
+
+msgid "OpenWrt Compiler author"
+msgstr "Автор компилятора OpenWrt"
