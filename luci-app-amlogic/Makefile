@@ -32,6 +32,19 @@ define Package/$(PKG_NAME)/conffiles
 /etc/config/amlogic
 endef
 
+define Package/luci-i18n-amlogic-ru
+  SECTION:=luci
+  CATEGORY:=LuCI
+  SUBMENU:=3. Applications
+  TITLE:=Russian translation for luci-app-amlogic
+  DEPENDS:=+luci-app-amlogic
+  PKGARCH:=all
+endef
+
+define Package/luci-i18n-amlogic-ru/description
+  Translation for luci-app-amlogic - Russian
+endef
+
 include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
