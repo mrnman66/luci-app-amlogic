@@ -27,7 +27,7 @@ jobs:
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-          ./scripts/feeds install luci luci-base luci-lib-ipkg kmod-tun
+          ./scripts/feeds install luci luci-base luci-lib-ipkg luci-i18n-base-ru kmod-tun
 
       - name: Add luci-app-amlogic to package feed
         working-directory: openwrt-sdk
@@ -39,31 +39,34 @@ jobs:
         working-directory: openwrt-sdk
         run: |
           echo "CONFIG_PACKAGE_luci-app-amlogic=y" >> .config
+          echo "CONFIG_PACKAGE_luci-i18n-amlogic-ru=y" >> .config
           echo "CONFIG_LUCI_LANG_ru=y" >> .config
           make defconfig
           cat .config | grep luci-app-amlogic
+          cat .config | grep luci-i18n-amlogic-ru
 
       - name: Compile luci-app-amlogic package
         working-directory: openwrt-sdk
         run: |
-          make package/luci-app-amlogic/compile V=99 -j$(nproc) || { cat openwrt-sdk/tmp/.packagedeps-luci-app-amlogic; exit 1; }
+          make package/luci-app-amlogic/{clean,compile} V=99 -j$(nproc) || { cat openwrt-sdk/tmp/.packagedeps-luci-app-amlogic; exit 1; }
 
       - name: Check compiled packages
         working-directory: openwrt-sdk
         run: |
           find bin/packages/ -type f -name "*.ipk"
 
-      - name: Collect compiled package
+      - name: Collect compiled packages
         run: |
           mkdir -p artifacts
           find openwrt-sdk/bin/packages/ -type f -name "luci-app-amlogic_*.ipk" -exec cp {} artifacts/ \;
+          find openwrt-sdk/bin/packages/ -type f -name "luci-i18n-amlogic-ru_*.ipk" -exec cp {} artifacts/ \;
 
-      - name: Create Release and Upload Package
+      - name: Create Release and Upload Packages
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.run_number }}
           name: luci-app-amlogic Build ${{ github.run_number }}
-          body: Automated build of luci-app-amlogic for OpenWrt 24.10.2 (armsr/armv8)
-          files: artifacts/luci-app-amlogic_*.ipk
+          body: Automated build of luci-app-amlogic and translations for OpenWrt 24.10.2 (armsr/armv8)
+          files: artifacts/*.ipk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
